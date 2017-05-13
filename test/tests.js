@@ -10,14 +10,15 @@ module.exports = function (promiseFinally, t) {
 	}
 
 	t.test('onFinally arguments', function (st) {
-		st.plan(2);
+		st.plan(3);
 
 		promiseFinally(Promise.resolve(42), function () {
 			st.equal(arguments.length, 0, 'resolved promise passes no arguments to onFinally');
 		})['catch'](st.fail);
 
-		promiseFinally(Promise.reject(NaN), function () {
-			st.equal(arguments.length, 0, 'rejected promise passes no arguments to onFinally');
+		promiseFinally(Promise.reject(42), function () {
+			st.equal(arguments.length, 1, 'rejected promise passes 1 argument to onFinally');
+			st.equal(arguments[0], 42, 'rejected promise passes rejection argument to onFinally');
 		}).then(st.fail);
 	});
 

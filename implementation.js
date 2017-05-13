@@ -7,9 +7,10 @@ requirePromise();
 var ES = require('es-abstract/es7');
 var bind = require('function-bind');
 
-var getPromise = function getPromise(C, handler) {
+var getPromise = function getPromise(C, handler, error) { // eslint-disable-line max-params
+	var isRejected = arguments.length === 3;
 	return new C(function (resolve) {
-		resolve(handler());
+		resolve(isRejected ? handler(error) : handler());
 	});
 };
 
@@ -30,7 +31,7 @@ var promiseFinally = function finally_(onFinally) {
 			});
 		},
 		function (e) {
-			return then(getPromise(C, handler), function () {
+			return then(getPromise(C, handler, e), function () {
 				throw e;
 			});
 		}
