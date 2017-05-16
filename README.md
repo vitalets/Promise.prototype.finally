@@ -1,3 +1,50 @@
+**This is fork of original [Promise.prototype.finally](https://github.com/es-shims/Promise.prototype.finally)
+with one small addition:  
+In case of rejection `finally` receives error (reason) as argument.
+It allows to decide which error should be passed further in promise chain.
+In many cases original error is more helpful for debugging than own finally error.**
+
+Let's take an example.
+
+Problem:
+```js
+Promise.resolve()
+  .then(() => doStuffWithError())
+  .finally(() => cleanupWithError());
+  // here we get the stacktrace of cleanup error, not original error that rejected the promise chain
+```
+
+Solution with original `finally`:
+```js
+Promise.resolve()
+  .then(doStuffWithError)
+  .then(result => {
+    return cleanupWithError().then(() => result);
+  }, err => {
+    return cleanupWithError().catch(() => Promise.reject(err));
+  });
+```
+
+Solution with modified `finally` receiving error argument:
+```js
+Promise.resolve()
+  .then(doStuffWithError)
+  .finally(err => cleanupWithError().catch(e => Promise.reject(err || e)));
+```
+
+See more details in [this discussion](https://github.com/tc39/proposal-promise-finally/issues/27).
+
+**Installation:**
+```bash
+npm i promise.prototype.finally.err
+```
+
+**Usage:**
+```js
+require('promise.prototype.finally.err').shim();
+```
+---
+
 # promise.prototype.finally <sup>[![Version Badge][npm-version-svg]][package-url]</sup>
 
 [![Build Status][travis-svg]][travis-url]

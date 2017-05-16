@@ -1,5 +1,5 @@
 {
-	"name": "promise.prototype.finally",
+	"name": "promise.prototype.finally.err",
 	"version": "2.0.1",
 	"author": "Jordan Harband",
 	"contributors": [
