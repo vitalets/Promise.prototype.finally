@@ -33,7 +33,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git://github.com/es-shims/Promise.prototype.finally.git"
+		"url": "git://github.com/vitalets/Promise.prototype.finally.err.git"
 	},
 	"keywords": [
 		"Promise",
